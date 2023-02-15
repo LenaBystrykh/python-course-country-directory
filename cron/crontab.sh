@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!usr/bin/env bash
 
 #  создание файла для логов, если его не существует
 touch /logs/crontab.log

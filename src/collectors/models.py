@@ -1,6 +1,7 @@
 """
 Описание моделей данных (DTO).
 """
+from datetime import datetime
 
 from pydantic import Field, BaseModel
 
@@ -75,6 +76,7 @@ class CountryDTO(BaseModel):
               "Aland",
               "Ahvenanmaa"
             ],
+            area=1580.0,
             currencies={
                 CurrencyInfoDTO(
                     code="EUR",
@@ -87,6 +89,8 @@ class CountryDTO(BaseModel):
                     native_name="svenska"
                 )
             },
+            latitude=60.116667,
+            longitude=19.9,
             name="\u00c5land Islands",
             population=28875,
             subregion="Northern Europe",
@@ -99,9 +103,12 @@ class CountryDTO(BaseModel):
     capital: str
     alpha2code: str
     alt_spellings: list[str]
+    area: float | None
     currencies: set[CurrencyInfoDTO]
     flag: str
     languages: set[LanguagesInfoDTO]
+    latitude: float | None
+    longitude: float | None
     name: str
     population: int
     subregion: str
@@ -138,16 +145,51 @@ class WeatherInfoDTO(BaseModel):
             temp=13.92,
             pressure=1023,
             humidity=54,
+            visibility=10000,
             wind_speed=4.63,
             description="scattered clouds",
+            timezone=7200,
+            dt=1661870592,
         )
     """
 
     temp: float
     pressure: int
     humidity: int
+    visibility: int
     wind_speed: float
     description: str
+    timezone: int
+    dt: int
+
+
+class NewsInfoDTO(BaseModel):
+    """
+    Модель новости.
+
+    .. code-block::
+
+        NewsInfoDTO(
+            source="Fox News",
+            author="Julia Musto",
+            title="Apple software update released to fix important security issue",
+            description="Apple has issued its iOS 16.3.1 software update just weeks after the release of iOS 16.3.
+            The tech giant's updates provide important security and bug fixes for the iPhone.",
+            url="https://www.foxnews.com/tech/apple-software-update-released-fix-security-issue",
+            publishedAt="2023-02-15T17:05:44Z",
+            content="Apple has issued its iOS 16.3.1 software update. \r\nThe update provides important bug and
+            security fixes for the iPhone including one flaw that has already been used by bad actors.
+            \r\nOn its website, t… [+1054 chars]",
+        )
+    """
+
+    source: str
+    author: str | None
+    title: str
+    description: str
+    url: str
+    publishedAt: datetime
+    content: str
 
 
 class LocationInfoDTO(BaseModel):
@@ -166,11 +208,14 @@ class LocationInfoDTO(BaseModel):
                   "Aland",
                   "Ahvenanmaa"
                 ],
+                area=1580.0,
                 currencies={
                     CurrencyInfoDTO(
                         code="EUR",
                     )
                 },
+                latitude=60.116667,
+                longitude=19.9,
                 flag="http://assets.promptapi.com/flags/AX.svg",
                 languages={
                     LanguagesInfoDTO(
@@ -178,26 +223,61 @@ class LocationInfoDTO(BaseModel):
                         native_name="svenska"
                     )
                 },
-                name="\u00c5land Islands",
-                population=28875,
-                subregion="Northern Europe",
-                timezones=[
-                    "UTC+02:00",
-                ],
-            ),
             weather=WeatherInfoDTO(
                 temp=13.92,
                 pressure=1023,
                 humidity=54,
+                visibility=10000,
                 wind_speed=4.63,
                 description="scattered clouds",
+                timezone=7200,
+                dt=1661870592,
             ),
             currency_rates={
                 "EUR": 0.016503,
             },
+            news=[
+                NewsInfoDTO(
+                    source="Fox News",
+                    author="Julia Musto",
+                    title="Apple software update released to fix important security issue",
+                    description="Apple has issued its iOS 16.3.1 software update just weeks after the release of
+                    iOS 16.3. The tech giant's updates provide important security and bug fixes for the iPhone.",
+                    url="https://www.foxnews.com/tech/apple-software-update-released-fix-security-issue",
+                    publishedAt="2023-02-15T17:05:44Z",
+                    content="Apple has issued its iOS 16.3.1 software update. \r\nThe update provides important bug
+                    and security fixes for the iPhone including one flaw that has already been used by bad actors.
+                    \r\nOn its website, t… [+1054 chars]",
+                ),
+                NewsInfoDTO(
+                    source="Fox News",
+                    author="Julia Musto",
+                    title="Apple software update released to fix important security issue",
+                    description="Apple has issued its iOS 16.3.1 software update just weeks after the release of
+                    iOS 16.3. The tech giant's updates provide important security and bug fixes for the iPhone.",
+                    url="https://www.foxnews.com/tech/apple-software-update-released-fix-security-issue",
+                    publishedAt="2023-02-15T17:05:44Z",
+                    content="Apple has issued its iOS 16.3.1 software update. \r\nThe update provides important bug
+                    and security fixes for the iPhone including one flaw that has already been used by bad actors.
+                    \r\nOn its website, t… [+1054 chars]",
+                ),
+                NewsInfoDTO(
+                    source="Fox News",
+                    author="Julia Musto",
+                    title="Apple software update released to fix important security issue",
+                    description="Apple has issued its iOS 16.3.1 software update just weeks after the release of
+                    iOS 16.3. The tech giant's updates provide important security and bug fixes for the iPhone.",
+                    url="https://www.foxnews.com/tech/apple-software-update-released-fix-security-issue",
+                    publishedAt="2023-02-15T17:05:44Z",
+                    content="Apple has issued its iOS 16.3.1 software update. \r\nThe update provides important bug
+                    and security fixes for the iPhone including one flaw that has already been used by bad actors.
+                    \r\nOn its website, t… [+1054 chars]",
+                ),
+            ]
         )
     """
 
     location: CountryDTO
     weather: WeatherInfoDTO
     currency_rates: dict[str, float]
+    news: list[NewsInfoDTO]
